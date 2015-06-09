@@ -92,7 +92,7 @@ public class ConvertGCodeMode1
                     LogFile.WriteLine("old line(" + (lineCount-1).ToString() + ") to convert new line(" + newCount.ToString() + ")...");
                     if (data.LastLine.E > EAdjust)
                     {
-                        OutFile.WriteLine("G1 F9000 E" + (data.LastLine.E - EAdjust).ToString());
+                        OutFile.WriteLine("G1 F2400 E" + (data.LastLine.E - EAdjust).ToString());
                         newCount++;
                     }
                     OutFile.WriteLine("G0 Z" + (data.LastLine.Z + ZAdjust).ToString());
@@ -101,7 +101,7 @@ public class ConvertGCodeMode1
                     newCount += 3;
                     if (data.LastLine.E > EAdjust)
                     {
-                        OutFile.WriteLine("G1 E" + (data.LastLine.E).ToString());
+                        OutFile.WriteLine("G1 F2400 E" + (data.LastLine.E).ToString());
                         newCount++;
                     }
                     OutFile.WriteLine(line);
