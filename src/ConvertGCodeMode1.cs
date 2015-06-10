@@ -11,7 +11,8 @@ public class ConvertGCodeMode1
     public bool EInfo = false;
 
     private double m_ELastValue = 0;
-    private string m_LastG0 = "";
+    //private string m_LastG0 = "";
+    private List<string> m_LastG0List = new List<string>();
 
     public ConvertGCodeMode1()
 	{
@@ -36,14 +37,18 @@ public class ConvertGCodeMode1
         while ((line = InFile.ReadLine()) != null)
         {
             lineCount++;
-            data.Parse(line);
-
+            if (!data.Parse(line))
+            {
+                OutFile.WriteLine(line);
+                newCount++;
+                continue;
+            }
             switch (status)
             {
                 case ProcessStatus.PS_NORMAL:
                     if (data.NeedConvert(XYThreshold))
                     {
-                        m_LastG0 = line;
+                        m_LastG0List.Add(line);
                         status = ProcessStatus.PS_DELETE;
                     }
                     break;
@@ -54,7 +59,7 @@ public class ConvertGCodeMode1
                     }
                     else
                     {
-                        m_LastG0 = line;
+                        m_LastG0List.Add(line);
                     }
                     break;
                 case ProcessStatus.PS_CONVERT:
@@ -96,9 +101,15 @@ public class ConvertGCodeMode1
                         newCount++;
                     }
                     OutFile.WriteLine("G0 Z" + (data.LastLine.Z + ZAdjust).ToString());
-                    OutFile.WriteLine(m_LastG0);
+                    // add g0 lines;
+                    foreach (string l in m_LastG0List)
+                    {
+                        OutFile.WriteLine(l);
+                        newCount++;
+                    }
+                    m_LastG0List.Clear();
                     OutFile.WriteLine("G0 Z" + (data.LastLine.Z).ToString());
-                    newCount += 3;
+                    newCount += 2;
                     if (data.LastLine.E > EAdjust)
                     {
                         OutFile.WriteLine("G1 F2400 E" + (data.LastLine.E).ToString());

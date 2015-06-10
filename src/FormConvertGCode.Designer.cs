@@ -188,7 +188,7 @@
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
             this.Name = "FormConvertGCode";
-            this.Text = "G码转换工具 VER:1506091648";
+            this.Text = "G码转换工具 VER:1506101653";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox1_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox1_DragEnter);

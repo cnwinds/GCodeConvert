@@ -27,9 +27,9 @@ public class PrintFile
         LayerNum = src.LayerNum;
     }
 
-    public void Parse(string line)
+    public bool Parse(string line)
     {
-        if (line.Length <= 0) return;
+        if (line.Length <= 0) return false;
 
         if (line[0] == ';')
         {
@@ -41,10 +41,12 @@ public class PrintFile
                     LayerNum = Int32.Parse(keys[1]);
                 }
             }
+            return false;
         }
         else
         {
             Line.Parse(line);
+            return true;
         }
     }
 
